@@ -27,12 +27,12 @@ router.post('/', (req, res) => {
 
 //Get all Accounts
 router.get('/', (req, res) => {
-    const { limit, sortby, sortdir } = req.query
+    const { limit, sortby, dir } = req.query
 
     db('accounts')
         .select('*')
+        .orderBy((sortby ? sortby : 'id'), dir ? dir : null)
         .limit(limit)
-        .orderBy(sortby ? (sortdir ? (sortby, sortdir) : sortby) : 'id')
         .then(accounts => {
             if (accounts) {
                 res.status(200).json({ data: accounts })
